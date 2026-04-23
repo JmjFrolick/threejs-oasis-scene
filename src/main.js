@@ -1,16 +1,16 @@
-import * as THREE from 'three';
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'https://esm.sh/three@0.160.0';
+import { PointerLockControls } from 'https://esm.sh/three@0.160.0/examples/jsm/controls/PointerLockControls.js';
+import { GLTFLoader } from 'https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
 
 // SCENE
 const scene = new THREE.Scene();
 
-// RENDERER (UPGRADED)
+// RENDERER 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true; // enable shadow calculations for lights and objects
 renderer.physicallyCorrectLights = true; // use physically accurate lighting calculations for more realistic results
-renderer.outputEncoding = THREE.sRGBEncoding; // correct color output so textures do not appear washed out
+renderer.outputColorSpace = THREE.SRGBColorSpace; // correct color output so textures do not appear washed out
 renderer.toneMappingExposure = 0.75; // controls overall brightness/exposure of the scene
 
 document.body.appendChild(renderer.domElement);
@@ -78,12 +78,12 @@ const clock = new THREE.Clock(); // used for animations and timing
 const loader = new THREE.CubeTextureLoader(); // loads 6-sided sky textures
 
 const skybox = loader.load([
-  '/daylight_rt.bmp', // right
-  '/daylight_lf.bmp', // left
-  '/daylight_up.bmp', // top
-  '/daylight_dn.bmp', // bottom
-  '/daylight_ft.bmp', // front
-  '/daylight_bk.bmp'  // back
+  'public/daylight_rt.bmp', // right
+  'public/daylight_lf.bmp', // left
+  'public/daylight_up.bmp', // top
+  'public/daylight_dn.bmp', // bottom
+  'public/daylight_ft.bmp', // front
+  'public/daylight_bk.bmp'  // back
 ]);
 
 scene.background = skybox; // visible sky
@@ -93,7 +93,7 @@ scene.environment = skybox; // lighting and reflections from sky
 // ---------------- TERRAIN --------------- //
 const textureLoader = new THREE.TextureLoader(); // loads textures for terrain and objects
 
-const sandTexture = textureLoader.load('sand.jpg'); // base sand texture
+const sandTexture = textureLoader.load('public/sand.jpg'); // base sand texture
 sandTexture.colorSpace = THREE.SRGBColorSpace; // correct color rendering
 const size = 100; // unused here but likely kept from earlier tuning
 
@@ -242,7 +242,7 @@ const water2 = new THREE.Mesh(
 
 // ---------- ROCK ARCH ---------- //
 
-const rockTexture = textureLoader.load('stone.jpg'); // rock surface texture
+const rockTexture = textureLoader.load('public/stone.jpg'); // rock surface texture
 rockTexture.colorSpace = THREE.SRGBColorSpace;
 
 // repeat texture to avoid stretching
@@ -407,14 +407,14 @@ document.addEventListener('keydown', (e) => {
 const palmTree = new THREE.Group(); // group for trunk and leaves
 
 // --- trunk texture ---
-const woodTexture = textureLoader.load('wood.jpg'); // load wood texture
+const woodTexture = textureLoader.load('public/wood.jpg'); // load wood texture
 woodTexture.colorSpace = THREE.SRGBColorSpace;
 woodTexture.wrapS = THREE.RepeatWrapping;
 woodTexture.wrapT = THREE.RepeatWrapping;
 woodTexture.repeat.set(1, 2); // slight vertical tiling
 
 // --- leaf texture ---
-const leafTexture = textureLoader.load('leaf.jpg'); // load leaf texture
+const leafTexture = textureLoader.load('public/leaf.jpg'); // load leaf texture
 leafTexture.colorSpace = THREE.SRGBColorSpace;
 leafTexture.wrapS = THREE.RepeatWrapping;
 leafTexture.wrapT = THREE.RepeatWrapping;
@@ -590,7 +590,7 @@ function updateFish(delta, elapsedTime) {
 const gltfloader = new GLTFLoader(); // loader for imported glb models
 
 // ----------- SUBMARINE ------------- //
-gltfloader.load('/models/submarine.glb', function (gltf) {
+gltfloader.load('public/models/submarine.glb', function (gltf) {
     const submarine = gltf.scene; // imported submarine model
 
     submarine.scale.set(15, 15, 15); // resize model
@@ -617,7 +617,7 @@ gltfloader.load('/models/submarine.glb', function (gltf) {
 // ------------ CRAB ---------------- //
 let crabModel = null; // stores crab model for cloning
 
-gltfloader.load('/models/crab.glb', function (gltf) {
+gltfloader.load('public/models/crab.glb', function (gltf) {
     crabModel = gltf.scene; // save loaded crab model
 
     // place multiple crabs around the scene
@@ -649,7 +649,7 @@ function spawnCrab(x, y, z, rotation = 0) {
 
 let shrubModel = null; // stores shrub model for cloning
 
-gltfloader.load('/models/shrub.glb', function (gltf) {
+gltfloader.load('public/models/shrub.glb', function (gltf) {
     shrubModel = gltf.scene; // save loaded shrub model
 
     // place multiple shrubs around grassy area
@@ -682,7 +682,7 @@ function spawnShrub(x, y, z, rotation = 0) {
 }
 
 // -------------- SHOVEL -------------- //
-gltfloader.load('/models/shovel.glb', function (gltf) {
+gltfloader.load('public/models/shovel.glb', function (gltf) {
     const shovel = gltf.scene; // imported shovel model
 
     shovel.scale.set(22, 22, 22); // resize model
@@ -694,7 +694,7 @@ gltfloader.load('/models/shovel.glb', function (gltf) {
 // -------------- CACTUS -------------- //
 let cactusModel = null; // stores cactus model for cloning
 
-gltfloader.load('/models/cactus.glb', function (gltf) {
+gltfloader.load('public/models/cactus.glb', function (gltf) {
   cactusModel = gltf.scene; // save loaded cactus model
 
   // replace cactus materials and enable shadows
@@ -741,7 +741,7 @@ function spawnCactus(x, y, z, rotation = 0) {
 
 // ------------ SANDCASTLE ------------ //
 
-gltfloader.load('/models/sandcastle.glb', function (gltf) {
+gltfloader.load('public/models/sandcastle.glb', function (gltf) {
     const sandcastle = gltf.scene; // imported sandcastle model
 
     sandcastle.scale.set(5, 5, 5); // resize model
@@ -751,7 +751,7 @@ gltfloader.load('/models/sandcastle.glb', function (gltf) {
 });
 
 // ------------ DINOSAUR -------------- //
-gltfloader.load('/models/dinosaur.glb', function (gltf) {
+gltfloader.load('public/models/dinosaur.glb', function (gltf) {
     const dinosaur = gltf.scene; // imported dinosaur model
 
     dinosaur.scale.set(0.03, 0.03, 0.03); // resize model
